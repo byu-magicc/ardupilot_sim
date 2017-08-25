@@ -1,0 +1,83 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://ros.org/wiki/xacro">
+
+  <xacro:macro name="simple_camera"
+    params="ns
+            frame_rate
+            hfov:=1
+            wpix:=640
+            hpix:=480
+            camera_range:=100
+            image_topic
+            cinfo_topic
+            parent_link
+            debug:=false
+            *origin">
+    <link name="${ns}/camera_base_link">
+      <inertial>
+        <mass value="0.001"/>
+        <xacro:insert_block name="origin"/>
+        <inertia ixx="0.0001" ixy="0.0" ixz="0.0" iyy="0.0001" iyz="0.0" izz="0.001" />
+      </inertial>
+      <xacro:if value="${debug}">
+        <visual name="${ns}/camera_visual">
+          <xacro:insert_block name="origin"/>
+          <geometry>
+            <sphere radius="0.05"/>
+          </geometry>
+        </visual>
+      </xacro:if>
+    </link>
+
+    <joint name="${ns}/camera_joint" type="fixed">
+      <xacro:insert_block name="origin"/>
+      <parent link="${parent_link}"/>
+      <child link="${ns}/camera_base_link"/>
+      <limit upper="0" lower="0" effort="0" velocity="0" />
+    </joint>
+
+    <gazebo reference="${ns}/camera_base_link">
+      <sensor type="camera" name="${ns}/camera">
+        <always_on>true</always_on>
+        <update_rate>${frame_rate}</update_rate>
+        <visualize>true</visualize>
+        <camera>
+          <horizontal_fov>${hfov}</horizontal_fov> <!-- Angular FOV in radians -->
+          <image>
+            <format>R8G8B8</format>
+            <width>${wpix}</width>
+            <height>${hpix}</height>
+          </image>
+          <clip>
+            <near>0.1</near>
+            <far>${camera_range}</far>
+          </clip>
+          <noise>
+            <type>gaussian</type>
+            <!-- Noise is sampled independently per pixel on each frame.
+                 That pixel's noise value is added to each of its color
+                 channels, which at that point lie in the range [0,1]. -->
+            <mean>0.0</mean>
+            <stddev>0.007</stddev>
+          </noise>
+        </camera>
+        <plugin name="${ns}_camera" filename="libgazebo_ros_camera.so">
+          <robotNamespace>${ns}</robotNamespace>
+          <alwaysOn>true</alwaysOn>
+          <updateRate>${frame_rate}</updateRate>
+          <cameraName>camera</cameraName>
+          <imageTopicName>${image_topic}</imageTopicName>
+          <cameraInfoTopicName>${cinfo_topic}</cameraInfoTopicName>
+          <frameName>camera</frameName>
+          <distortionK1>0.0</distortionK1>
+          <distortionK2>0.0</distortionK2>
+          <distortionK3>0.0</distortionK3>
+          <distortionT1>0.0</distortionT1>
+          <distortionT2>0.0</distortionT2>
+        </plugin>
+      </sensor>
+    </gazebo>
+  </xacro:macro>
+
+
+</robot>
