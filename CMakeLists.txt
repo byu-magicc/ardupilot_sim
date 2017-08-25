@@ -131,17 +131,14 @@ include_directories(include ${catkin_INCLUDE_DIRS} ${GAZEBO_INCLUDE_DIRS})
 
 ## Declare a C++ library
 add_library(ArduPilotPlugin SHARED src/ArduPilotPlugin.cc)
-add_library(ArduCopterPlugin SHARED src/ArduCopterPlugin.cc)
 
 ## Add cmake target dependencies of the library
 ## as an example, code may need to be generated before libraries
 ## either from message generation or dynamic reconfigure
 add_dependencies(ArduPilotPlugin ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
-add_dependencies(ArduCopterPlugin ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
 ## Specify libraries to link a library or executable target against
 target_link_libraries(ArduPilotPlugin ${catkin_LIBRARIES} ${GAZEBO_LIBRARIES})
-target_link_libraries(ArduCopterPlugin ${catkin_LIBRARIES} ${GAZEBO_LIBRARIES})
 
 #############
 ## Install ##
