@@ -3,8 +3,7 @@
   <!-- Properties -->
   <xacro:property name="ns" value="iris" />
   <xacro:property name="mesh_root" value="package://ardupilot_sim/agents/iris/meshes" />
-  <!-- <xacro:property name="mesh_root" value="package://iris/meshes" /> -->
-  <xacro:property name="mass" value="1.75" /> <!-- [kg] -->
+  <xacro:property name="mass" value="1.5" /> <!-- [kg] -->
   <xacro:property name="body_inertia">
     <inertia ixx="0.008" ixy="0.0" ixz="0.0" iyy="0.0815" iyz="0.0" izz="0.017" />
   </xacro:property>
@@ -51,6 +50,7 @@
     <material>Gazebo/DarkGrey</material>
   </gazebo>
 
+  <!-- *********************** GAZEBO ROBOT PLUGINS ******************* -->
   <xacro:include filename="$(find ardupilot_sim)/xacro/imu.xacro" />
   <xacro:imu ns="${ns}" update_rate="1000">
     <pose>0 0 0 3.141593 0 0</pose>
@@ -70,12 +70,6 @@
     <origin xyz="-0.13 -0.2 0.023" rpy="0 0 0" />
   </xacro:rotor>
 
-<!--   <gazebo reference="${ns}/base_link">
-    <material>Gazebo/FlatBlack</material>
-  </gazebo> -->
-
   <xacro:include filename="$(find ardupilot_sim)/xacro/arducopter.xacro" />
   <xacro:arducopter ns="${ns}" />
-  
-
 </robot>

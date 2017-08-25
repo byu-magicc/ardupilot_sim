@@ -988,7 +988,6 @@ void ArduPilotPlugin::ApplyMotorForces(const double _dt)
         const double vel = this->dataPtr->controls[i].joint->GetVelocity(0);
         const double error = vel - velTarget;
         const double force = this->dataPtr->controls[i].pid.Update(error, _dt);
-        gzdbg << "[" << i << "] setting force: " << force << " (" << vel << ", " << velTarget << ", " << error << ")" << std::endl;
         this->dataPtr->controls[i].joint->SetForce(0, force);
       }
       else if (this->dataPtr->controls[i].type == "POSITION")
