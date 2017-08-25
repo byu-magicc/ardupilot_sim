@@ -53,7 +53,15 @@ These steps can be found at the official ArduPilot Dev documentation on [Simulat
 
     The copter should then take off and hover at 30m. You may then use the map to right click and `Fly To` locations on the map (this is a GUIDED mode feature).
 
+## Troubleshooting ##
+
+- MAVProxy disconnects (`no link` error):
+    1. During the gyro bias calibration step, ArduPilot does not send MAVLink heartbeat messages.
+    2. ArduPilot gets stuck during this step if there are large IMU variances -- i.e., if the UAV is moving.
+    3. For some reason, Gazebo seems to start the Iris model with each motor having some angular velocity, which causes the Iris to be moving slightly.
 
 ## Resources ##
 
 This package is based off the [SwiftGust/ardupilot_gazebo](https://github.com/SwiftGust/ardupilot_gazebo) repo.
+
+- [ErleRobot/ardupilot_sitl_gazebo_plugin](https://github.com/erlerobot/ardupilot_sitl_gazebo_plugin/tree/master/ardupilot_sitl_gazebo_plugin)
