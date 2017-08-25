@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://ros.org/wiki/xacro">
+  <xacro:macro name="imu" params="ns update_rate *pose">
+    <link name="${ns}/imu_link">
+      <inertial>
+        <mass value="0.15" />
+        <origin xyz="0 0 0" />
+        <inertia ixx="0.00001" ixy="0.0" ixz="0.0" iyy="0.00002" iyz="0.0" izz="0.00003" />
+      </inertial>
+    </link>
+    <joint name="${ns}/imu_joint" type="revolute">
+      <parent link="${ns}/base_link" />
+      <child link="${ns}/imu_link" />
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <axis xyz="0 0 1"/>
+      <dynamics damping="1"/>
+      <limit effort="0" velocity="0" lower="0" upper="0" />
+    </joint>
+    <gazebo reference="${ns}/imu_link">
+      <sensor name="imu_sensor" type="imu">
+        <xacro:insert_block name="pose" />
+        <always_on>1</always_on>
+        <update_rate>${update_rate}</update_rate>
+      </sensor>
+    </gazebo>
+  </xacro:macro>
+</robot>

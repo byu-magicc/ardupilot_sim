@@ -1,0 +1,81 @@
+<?xml version="1.0"?>
+<robot name="iris" xmlns:xacro="http://ros.org/wiki/xacro">
+  <!-- Properties -->
+  <xacro:property name="ns" value="iris" />
+  <xacro:property name="mesh_root" value="package://ardupilot_sim/agents/iris/meshes" />
+  <!-- <xacro:property name="mesh_root" value="package://iris/meshes" /> -->
+  <xacro:property name="mass" value="1.75" /> <!-- [kg] -->
+  <xacro:property name="body_inertia">
+    <inertia ixx="0.008" ixy="0.0" ixz="0.0" iyy="0.0815" iyz="0.0" izz="0.017" />
+  </xacro:property>
+  <xacro:property name="rotor_inertia">
+    <inertia ixx="9.75e-06" ixy="0.0" ixz="0.0" iyy="0.000166704" iyz="0.0" izz="0.000167604" />
+  </xacro:property>
+
+
+  <!-- *********************** GAZEBO ROBOT DEFINITION ******************* -->
+  <link name="${ns}/base_link">
+    <inertial>
+      <mass value="${mass}" />
+      <origin xyz="0 0 0" />
+      <xacro:insert_block name="body_inertia" />
+    </inertial>
+
+    <collision>
+      <origin xyz="0 0 -0.01" rpy="0 0 0" />
+      <geometry>
+        <box size="0.47 0.47 0.09"/>
+      </geometry>
+    </collision>
+
+    <!-- Iris Visual -->
+    <visual>
+      <geometry>
+        <mesh filename="${mesh_root}/iris.dae" scale="1 1 1" />
+      </geometry>
+    </visual>
+  </link>
+
+  <!-- Add collision contact and friction params -->
+  <gazebo reference="${ns}/base_link">
+    <!-- Collision -->
+    <maxVel>100.0</maxVel>
+    <minDepth>0.001</minDepth>
+    <!-- Friction -->
+    <mu1>1.0</mu1>
+    <mu2>1.0</mu2>
+  </gazebo>
+
+  <!-- Add visual params -->
+  <gazebo reference="${ns}/base_link">
+    <material>Gazebo/DarkGrey</material>
+  </gazebo>
+
+  <xacro:include filename="$(find ardupilot_sim)/xacro/imu.xacro" />
+  <xacro:imu ns="${ns}" update_rate="1000">
+    <pose>0 0 0 3.141593 0 0</pose>
+  </xacro:imu>
+
+  <xacro:include filename="$(find ardupilot_sim)/xacro/rotor.xacro" />
+  <xacro:rotor ns="${ns}" motor_number="0" prop_dir="ccw">
+    <origin xyz="0.13 -0.22 0.023" rpy="0 0 0" />
+  </xacro:rotor>
+  <xacro:rotor ns="${ns}" motor_number="1" prop_dir="ccw">
+    <origin xyz="-0.13 0.2 0.023" rpy="0 0 0" />
+  </xacro:rotor>
+  <xacro:rotor ns="${ns}" motor_number="2" prop_dir="cw">
+    <origin xyz="0.13 0.22 0.023" rpy="0 0 0" />
+  </xacro:rotor>
+  <xacro:rotor ns="${ns}" motor_number="3" prop_dir="cw">
+    <origin xyz="-0.13 -0.2 0.023" rpy="0 0 0" />
+  </xacro:rotor>
+
+<!--   <gazebo reference="${ns}/base_link">
+    <material>Gazebo/FlatBlack</material>
+  </gazebo> -->
+
+  <xacro:include filename="$(find ardupilot_sim)/xacro/arducopter.xacro" />
+  <xacro:arducopter ns="${ns}" />
+  
+
+</robot>

@@ -1,46 +1,4 @@
 <?xml version="1.0" ?>
-
-<!--
-
-To run this demo, you must have following arducopter repo checked out:
-
-https://github.com/iche033/ardupilot/tree/gazebo_sitl_irlock
-
-Compile ArduCopter with SITL mode. Instructions are similar to:
-
-http://ardupilot.org/dev/docs/building-px4-for-linux-with-make.html
-
-but change the make target to sitl instead of px4-v2, i.e.
-
-$ cd ardupilot/ArduCopter && make sitl
-
-To start simulation, first run gazebo:
-
-gazebo worlds/iris_irlock_demo.world
-
-Gazebo starts up paused in a black screen. To run the simulation,
-setup ArduCopter and run the command below in a separate terminal:
-
-sim_vehicle.sh -j 4 -f Gazebo
-
-This will start mavproxy. Wait until you have a GPS lock.
-You can then do the usual mavprox commands with Gazebo, e.g.
-
-# arm the motors
-STABILIZE> arm throttle
-
-# switch to LOITER mode
-STABILIZE> mode LOITER
-
-# take off using rc command
-LOITER> rc 3 1700
-
-# wait until the irlock beacon is within the view then switch to land mode
-# to begin precision landing
-LOITER> mode LAND
-
--->
-
 <sdf version="1.6">
   <world name="default">
     <physics type="ode">
@@ -85,7 +43,7 @@ LOITER> mode LAND
           </surface>
         </collision>
         <visual name="runway">
-          <pose>000 0 0.005 0 0 -1.5707</pose>
+          <pose>0 0 0 0 0 -1.5707</pose>
           <cast_shadows>false</cast_shadows>
           <geometry>
             <plane>
@@ -121,12 +79,12 @@ LOITER> mode LAND
       </link>
     </model>
 
-    <model name="iris">
+<!--     <model name="iris">
       <pose> 0 0 0 0 0 0 </pose>
       <include>
-        <uri>model://iris_with_standoffs3</uri>
+        <uri>model://iris_with_standoffs_parker</uri>
          <pose> 0 0 0 0 0 0 </pose>
       </include>
-    </model>
+    </model> -->
   </world>
 </sdf>

@@ -3,10 +3,7 @@
   <model name='iris'>
     <pose>0 0 0.194923 0 0 0</pose>
     <link name='base_link'>
-      <velocity_decay>
-        <linear>0.0</linear>
-        <angular>0.0</angular>
-      </velocity_decay>
+
       <inertial>
         <pose>0 0 0 0 0 0</pose>
         <mass>1.5</mass>
@@ -19,6 +16,7 @@
           <izz>0.017</izz>
         </inertia>
       </inertial>
+
       <collision name='base_link_collision'>
         <pose>0 0 -0.08 0 0 0</pose>
         <geometry>
@@ -41,6 +39,8 @@
           </friction>
         </surface>
       </collision>
+
+
       <visual name='base_link_visual'>
         <geometry>
           <mesh>
@@ -115,6 +115,9 @@
         </material>
       </visual>
     </link>
+
+
+
     <link name='iris/ground_truth/odometry_sensorgt_link'>
       <pose>0 0 0 0 -0 0</pose>
       <inertial>
@@ -130,6 +133,8 @@
         </inertia>
       </inertial>
     </link>
+
+    
     <joint name='iris/ground_truth/odometry_sensorgt_joint' type='revolute'>
       <child>iris/ground_truth/odometry_sensorgt_link</child>
       <parent>base_link</parent>

@@ -31,7 +31,8 @@
 #include <gazebo/msgs/msgs.hh>
 #include <gazebo/sensors/sensors.hh>
 #include <gazebo/transport/transport.hh>
-#include "../include/ArduCopterPlugin.hh"
+
+#include "ardupilot_sim/ArduCopterPlugin.hh"
 
 #define MAX_MOTORS 255
 
@@ -355,6 +356,8 @@ void ArduCopterPlugin::Load(physics::ModelPtr _model, sdf::ElementPtr _sdf)
 
   this->dataPtr->model = _model;
 
+  gzdbg << "apm load\n";
+
   // per rotor
   if (_sdf->HasElement("rotor"))
   {
@@ -474,6 +477,8 @@ void ArduCopterPlugin::Load(physics::ModelPtr _model, sdf::ElementPtr _sdf)
     }
   }
 
+  gzdbg << "get sensors\n";
+
   // Get sensors
   std::string imuName;
   getSdfParam<std::string>(_sdf, "imuName", imuName, "imu_sensor");
@@ -542,6 +547,7 @@ void ArduCopterPlugin::Load(physics::ModelPtr _model, sdf::ElementPtr _sdf)
   // Initialise ardupilot sockets
   if (!InitArduCopterSockets(_sdf))
   {
+    gzerr << "Something happened!" << std::endl;
     return;
   }
 
@@ -554,7 +560,7 @@ void ArduCopterPlugin::Load(physics::ModelPtr _model, sdf::ElementPtr _sdf)
   this->dataPtr->updateConnection = event::Events::ConnectWorldUpdateBegin(
       std::bind(&ArduCopterPlugin::OnUpdate, this));
 
-  gzlog << "ArduCopter ready to fly. The force will be with you" << std::endl;
+  gzdbg << "ArduCopter ready to fly. The force will be with you" << std::endl;
 }
 
 /////////////////////////////////////////////////

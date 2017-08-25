@@ -45,7 +45,8 @@
 #include <gazebo/msgs/msgs.hh>
 #include <gazebo/sensors/sensors.hh>
 #include <gazebo/transport/transport.hh>
-#include "include/ArduPilotPlugin.hh"
+  
+#include "ardupilot_sim/ArduPilotPlugin.hh"
 
 #define MAX_MOTORS 255
 
@@ -901,7 +902,7 @@ void ArduPilotPlugin::Load(physics::ModelPtr _model, sdf::ElementPtr _sdf)
   this->dataPtr->updateConnection = event::Events::ConnectWorldUpdateBegin(
       std::bind(&ArduPilotPlugin::OnUpdate, this));
 
-  gzlog << "[" << this->dataPtr->modelName << "] "
+  gzdbg << "[" << this->dataPtr->modelName << "] "
         << "ArduPilot ready to fly. The force will be with you" << std::endl;
 }
 
@@ -987,6 +988,7 @@ void ArduPilotPlugin::ApplyMotorForces(const double _dt)
         const double vel = this->dataPtr->controls[i].joint->GetVelocity(0);
         const double error = vel - velTarget;
         const double force = this->dataPtr->controls[i].pid.Update(error, _dt);
+        gzdbg << "[" << i << "] setting force: " << force << " (" << vel << ", " << velTarget << ", " << error << ")" << std::endl;
         this->dataPtr->controls[i].joint->SetForce(0, force);
       }
       else if (this->dataPtr->controls[i].type == "POSITION")
@@ -1146,22 +1148,22 @@ void ArduPilotPlugin::ReceiveMotorCommand()
           this->dataPtr->controls[i].cmd =
             this->dataPtr->controls[i].multiplier * (cmd + this->dataPtr->controls[i].offset);
 
-            /*
-            const double cmd_in = this->dataPtr->controls[i].cmd;
-            if (cmd_in != last_cmd)
-              {
-                gzdbg << "apply input chan[" << this->dataPtr->controls[i].channel
-                    << "] to control chan[" << i
-                    << "] with joint name ["
-                    << this->dataPtr->controls[i].jointName
-                    << "] raw cmd ["
-                    << pkt.motorSpeed[this->dataPtr->controls[i].channel]
-                    << "] adjusted cmd [" << this->dataPtr->controls[i].cmd
-                     << "].\n";
+            
+            // const double cmd_in = this->dataPtr->controls[i].cmd;
+            // if (cmd_in != this->dataPtr->last_cmd)
+            //   {
+            //     gzdbg << "apply input chan[" << this->dataPtr->controls[i].channel
+            //         << "] to control chan[" << i
+            //         << "] with joint name ["
+            //         << this->dataPtr->controls[i].jointName
+            //         << "] raw cmd ["
+            //         << pkt.motorSpeed[this->dataPtr->controls[i].channel]
+            //         << "] adjusted cmd [" << this->dataPtr->controls[i].cmd
+            //          << "].\n";
 
-              last_cmd = cmd_in;
-              }
-              */
+            //   this->dataPtr->last_cmd = cmd_in;
+            //   }
+              
         }
         else
         {

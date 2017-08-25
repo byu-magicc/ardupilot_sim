@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<launch>
+    <!-- Run the APM provided `sim_vehicle.py` SITL command -->
+    <node pkg="ardupilot_sim" type="copter_sitl.sh" name="copter_sitl" />
+
+    <!-- Start Gazebo -->
+    <include file="$(find gazebo_ros)/launch/empty_world.launch">
+        <arg name="world_name" value="$(find ardupilot_sim)/worlds/iris_ardupilot.world"/>
+        <arg name="debug" value="false"/>
+        <arg name="gui" value="true"/>
+        <arg name="paused" value="false"/>
+        <arg name="use_sim_time" value="true"/>
+        <arg name="headless" value="false"/>
+        <arg name="verbose" value="true"/>
+    </include>
+
+    <!-- Spawn in Gazebo -->
+    <include file="$(find ardupilot_sim)/launch/spawn_mav.launch">
+        <arg name="mav_name"            value="iris" />
+        <arg name="model"               value="$(find ardupilot_sim)/agents/iris/iris.xacro" />
+        <arg name="x"                   value="0"/>
+        <arg name="y"                   value="0"/>
+        <arg name="z"                   value="0"/>
+        <arg name="yaw"                 value="0"/>
+        <arg name="color"               value="Black"/>
+    </include>
+</launch>
