@@ -3,6 +3,8 @@ ardupilot_sim
 
 This ROS simulation package includes plugins necessary for SITL/Gazebo simulations with the APM stack. Currently, only Copter plugins exist.
 
+Tested with the following setup:
+
 ## Setting up ArduCopter SITL Environment ##
 
 These steps can be found at the official ArduPilot Dev documentation on [Simulation & Testing](http://ardupilot.org/dev/docs/setting-up-sitl-on-linux.html).
@@ -52,6 +54,21 @@ These steps can be found at the official ArduPilot Dev documentation on [Simulat
     ```
 
     The copter should then take off and hover at 30m. You may then use the map to right click and `Fly To` locations on the map (this is a GUIDED mode feature).
+
+## Using an RC Transmitter as a Joystick in SITL ##
+
+It is possible to use an RC Transmitter to control the SITL using MAVProxy's `joystick` module. See ArduPilot SITL docs [here](http://ardupilot.org/dev/docs/using-sitl-for-ardupilot-testing.html#using-a-joystick) and MAVProxy module docs [here](http://ardupilot.github.io/MAVProxy/html/modules/joystick.html). The following should set it up for you (working with Taranis Q X7).
+
+1. Install prerequisites:
+
+    ```bash
+    $ sudo -H pip install joystick pygame
+    ```
+
+1. Connect RC TX via USB.
+1. Calibrate RC TX using QGroundControl, `Radio Calibration` tab (this will take care of channel mappings). -- you may need to restart simulation.
+1. In MAVProxy xterm, load the joystick module (`module load joystick`).
+1. Fly!
 
 ## Troubleshooting ##
 
