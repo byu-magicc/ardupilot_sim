@@ -7,7 +7,7 @@
             hfov:=1
             wpix:=640
             hpix:=480
-            camera_range:=100
+            camera_range:=200
             image_topic
             cinfo_topic
             parent_link
