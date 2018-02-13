@@ -55,6 +55,19 @@ These steps can be found at the official ArduPilot Dev documentation on [Simulat
 
     The copter should then take off and hover at 30m. You may then use the map to right click and `Fly To` locations on the map (this is a GUIDED mode feature).
 
+## Coordinate Frames ##
+
+The firmware on the Pixhawk (both APM and the underlying PX4) assume a standard aerospace fixed coordinate frame of *local North-East-Down (NED)*. Gazebo, however, has been very popular with ground and service robotics and therefore uses the fixed *[local East-North-Up (ENU)](https://en.wikipedia.org/wiki/Geographic_coordinate_system#Cartesian_coordinates)* coordinate frame. Note that the order in which the frame is stated is patterned after X-Y-Z (i.e., East-North-Up means that X is East, Y is North, Z is Up). It is important to note that both of these conventions (NED and ENU) are fixed frames. The rotating and translating body in this fixed frame (i.e., the UAV) typically has a frame that is inspired by its locally fixed frame. This means that for an NED (Z-down) reference frame, the UAV body is typically forward-right-down (Z-down). For an ENU (Z-up) reference frame, the UAV body is typically forwared-left-up (Z-up). It is common for people to call these local body frames as, respectively, NED and NWU frames, but you should be aware that this is not strictly correct and cause confusion. We will explain the possible confusion by focusing on the meaning of *north* in both of these (NED and NWU body) frames. Because these are local body frames, there is no *north* in the globally fixed sense, other than that *north* means forward out of the nose of the airplane. For this reason, it is suggested that when referring to body NED or NWU, the word *body* is included, to signal to the reader that these compass directions do not refer to the Earth's poles. To be very clear for the sake of the quick reader, it may even be advisable to write it as such: NED (FRD) and NWU (FLU).
+
+In simulation, it is important to handle these coordinate frames with clarity and precision. Gazebo returns world pose (`model->GetWorldPose().Ign()`) w.r.t the fixed ENU frame. APM expects data w.r.t the fixed NED frame. Therefore, a coordinate frame transformation is necessary to justify this. This transformation can be specified by the user in the `arducopter.xacro` (though there should be no reason to change it) as follows:
+
+```xml
+<!-- How to get from the Gazebo model's body frame [NWU (FLU)] to an aerospace body frame [NED (FRD)] -->
+<modelXYZToAirplaneXForwardZDown>0 0 0 3.141593 0 0</modelXYZToAirplaneXForwardZDown>
+<!-- How to get from the Gazebo fixed ENU frame to a fixed NED frame -->
+<gazeboXYZToNED>0 0 0 3.141593 0 1.5708</gazeboXYZToNED>
+```
+
 ## Using an RC Transmitter as a Joystick in SITL ##
 
 It is possible to use an RC Transmitter to control the SITL using MAVProxy's `joystick` module. See ArduPilot SITL docs [here](http://ardupilot.org/dev/docs/using-sitl-for-ardupilot-testing.html#using-a-joystick) and MAVProxy module docs [here](http://ardupilot.github.io/MAVProxy/html/modules/joystick.html). The following should set it up for you (working with Taranis Q X7).

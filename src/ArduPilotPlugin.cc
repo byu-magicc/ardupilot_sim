@@ -1249,7 +1249,7 @@ void ArduPilotPlugin::SendState() const
   const ignition::math::Pose3d NEDToModelXForwardZUp =
     gazeboXYZToModelXForwardZDown - this->gazeboXYZToNED;
 
-  // gzerr << "ned to model [" << NEDToModelXForwardZUp << "]\n";
+  // gzerr << "ned to model [" << NEDToModelXForwardZUp << "] -- worldPose: [" << this->dataPtr->model->GetWorldPose().Ign() << "]\n";
 
   // N
   pkt.positionXYZ[0] = NEDToModelXForwardZUp.Pos().X();
