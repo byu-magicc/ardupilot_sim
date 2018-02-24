@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <launch>
     <!-- Run the APM provided `sim_vehicle.py` SITL command -->
-    <node pkg="ardupilot_sim" type="copter_sitl.sh" name="copter_sitl" />
+    <node pkg="ardupilot_sim" type="copter_sitl.sh" name="copter_sitl" args="40.267987,-111.635558"  />
 
     <!-- Start Gazebo -->
     <include file="$(find gazebo_ros)/launch/empty_world.launch">
