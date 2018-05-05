@@ -90,6 +90,10 @@ It is possible to use an RC Transmitter to control the SITL using MAVProxy's `jo
     2. ArduPilot gets stuck during this step if there are large IMU variances -- i.e., if the UAV is moving.
     3. For some reason, Gazebo seems to start the Iris model with each motor having some angular velocity, which causes the Iris to be moving slightly.
 
+- MAVProxy Map says "Unavailable":
+    - The map tile server provider is not available. Go to `View` > `Service` and choose another (`MicrosoftSat` seems to work well).
+    - As discussed [here](https://discuss.ardupilot.org/t/sitl-on-linux-map-unavailable/26088), set the `MAP_SERVICE` environment variable to change the default map service provider: `export MAP_SERVICE=MicrosoftSat`.
+
 ## Resources ##
 
 This package is based off the [SwiftGust/ardupilot_gazebo](https://github.com/SwiftGust/ardupilot_gazebo) repo.
