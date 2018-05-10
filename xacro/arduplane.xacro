@@ -1,9 +1,9 @@
 <?xml version="1.0"?>
-<robot name="iris" xmlns:xacro="http://ros.org/wiki/xacro">
+<robot name="plane" xmlns:xacro="http://ros.org/wiki/xacro">
 
-  <xacro:macro name="arducopter" params="ns">
+  <xacro:macro name="arduplane" params="ns">
     <gazebo>
-      <plugin name="arducopter_plugin" filename="libArduPilotPlugin.so">
+      <plugin name="arduplane_plugin" filename="libArduPilotPlugin.so">
         <fdm_addr>127.0.0.1</fdm_addr>
         <fdm_port_in>9002</fdm_port_in>
         <fdm_port_out>9003</fdm_port_out>
@@ -37,45 +37,55 @@
           <controlVelocitySlowdownSim>1</controlVelocitySlowdownSim>
         </control>
         <control channel="1">
-          <type>VELOCITY</type>
+          <type>POSITION</type>
           <offset>0</offset>
           <p_gain>0.20</p_gain>
           <i_gain>0</i_gain>
-          <d_gain>0</d_gain>
+          <d_gain>0.01</d_gain>
           <i_max>0</i_max>
           <i_min>0</i_min>
           <cmd_max>2.5</cmd_max>
           <cmd_min>-2.5</cmd_min>
-          <jointName>${ns}/rotor_1_joint</jointName>
-          <multiplier>838</multiplier>
+          <jointName>${ns}/left_aileron_joint</jointName>
           <controlVelocitySlowdownSim>1</controlVelocitySlowdownSim>
         </control>
         <control channel="2">
-          <type>VELOCITY</type>
+          <type>POSITION</type>
           <offset>0</offset>
           <p_gain>0.20</p_gain>
           <i_gain>0</i_gain>
-          <d_gain>0</d_gain>
+          <d_gain>0.01</d_gain>
           <i_max>0</i_max>
           <i_min>0</i_min>
           <cmd_max>2.5</cmd_max>
           <cmd_min>-2.5</cmd_min>
-          <jointName>${ns}/rotor_2_joint</jointName>
-          <multiplier>-838</multiplier>
+          <jointName>${ns}/right_aileron_joint</jointName>
           <controlVelocitySlowdownSim>1</controlVelocitySlowdownSim>
         </control>
         <control channel="3">
-          <type>VELOCITY</type>
+          <type>POSITION</type>
           <offset>0</offset>
           <p_gain>0.20</p_gain>
           <i_gain>0</i_gain>
-          <d_gain>0</d_gain>
+          <d_gain>0.01</d_gain>
           <i_max>0</i_max>
           <i_min>0</i_min>
           <cmd_max>2.5</cmd_max>
           <cmd_min>-2.5</cmd_min>
-          <jointName>${ns}/rotor_3_joint</jointName>
-          <multiplier>-838</multiplier>
+          <jointName>${ns}/elevator_joint</jointName>
+          <controlVelocitySlowdownSim>1</controlVelocitySlowdownSim>
+        </control>
+        <control channel="4">
+          <type>POSITION</type>
+          <offset>0</offset>
+          <p_gain>0.20</p_gain>
+          <i_gain>0</i_gain>
+          <d_gain>0.01</d_gain>
+          <i_max>0</i_max>
+          <i_min>0</i_min>
+          <cmd_max>2.5</cmd_max>
+          <cmd_min>-2.5</cmd_min>
+          <jointName>${ns}/rudder_joint</jointName>
           <controlVelocitySlowdownSim>1</controlVelocitySlowdownSim>
         </control>
       </plugin>

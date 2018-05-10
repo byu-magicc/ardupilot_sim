@@ -1,0 +1,64 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://ros.org/wiki/xacro">
+  <xacro:macro name="control_surface" params="ns surface_name limit *pose *xyz">
+    <link name="${ns}/${surface_name}">
+      <inertial>
+        <mass value="0.000000001" />
+        <inertia>
+          <ixx>0.000001</ixx>
+          <ixy>0.0</ixy>
+          <iyy>0.000001</iyy>
+          <ixz>0.0</ixz>
+          <iyz>0.0</iyz>
+          <izz>0.000001</izz>
+        </inertia>
+        <xacro:insert_block name="pose" />
+      </inertial>
+    </link>
+
+    <joint name="${ns}/${surface_name}_joint" type="revolute">
+      <parent link="${ns}/base_link" />
+      <child link="${ns}/${surface_name}" />
+      <xacro:insert_block name="pose" />
+      <axis>
+        <xacro:insert_block name="xyz" />
+        <limit>
+          <!-- -30/+30 deg. -->
+          <lower>-${limit}</lower>
+          <upper>${limit}</upper>
+        </limit>
+        <dynamics>
+          <damping>1.000</damping>
+        </dynamics>
+      </axis>
+      <physics>
+        <ode>
+          <implicit_spring_damper>1</implicit_spring_damper>
+        </ode>
+      </physics>
+    </joint>
+
+
+    <gazebo>
+      <plugin name="${surface_name}_plugin" filename="libLiftDragPlugin.so">
+        <!--Look in plane.xacro for definitions-->
+        <xacro:if value="${surface_name == 'left_aileron'}">
+          <xacro:insert_block name="aileron_coeffs"/>
+        </xacro:if>
+        <xacro:if value="${surface_name == 'right_aileron'}">
+          <xacro:insert_block name="aileron_coeffs"/>
+        </xacro:if>
+        <xacro:if value="${surface_name == 'rudder'}">
+          <xacro:insert_block name="rudder_coeffs"/>
+        </xacro:if>
+        <xacro:if value="${surface_name == 'elevator'}">
+          <xacro:insert_block name="elevator_coeffs"/>
+        </xacro:if>
+        <forward>1 0 0</forward>
+        <link_name>base_link</link_name>
+        <control_joint_name>${surface_name}_joint</control_joint_name>
+      </plugin>
+    </gazebo>
+  </xacro:macro>
+</robot>
+

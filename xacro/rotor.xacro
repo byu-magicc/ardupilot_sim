@@ -1,9 +1,10 @@
 <?xml version="1.0"?>
 <robot xmlns:xacro="http://ros.org/wiki/xacro">
-  <xacro:macro name="rotor" params="ns motor_number prop_dir *origin">
+  <xacro:macro name="rotor" params="ns motor_number prop_dir *pose">
     <link name="${ns}/rotor_${motor_number}">
+      <xacro:insert_block name="pose" />
       <inertial>
-        <mass value="0.025" />
+        <!--Look in iris.xacro or plane.xacro for definition -->
         <xacro:insert_block name="rotor_inertia" />
       </inertial>
 
@@ -20,7 +21,6 @@
       </visual>
     </link>
     <joint name="${ns}/rotor_${motor_number}_joint" type="revolute">
-      <xacro:insert_block name="origin" />
       <parent link="${ns}/base_link" />
       <child link="${ns}/rotor_${motor_number}" />
       <axis xyz="0 0 1"/>
