@@ -912,7 +912,7 @@ void ArduPilotPlugin::OnUpdate()
   std::lock_guard<std::mutex> lock(this->dataPtr->mutex);
 
   const gazebo::common::Time curTime =
-    this->dataPtr->model->GetWorld()->GetSimTime();
+    this->dataPtr->model->GetWorld()->SimTime();
 
   // Update the control surfaces and publish the new state.
   if (curTime > this->dataPtr->lastControllerUpdateTime)
@@ -997,7 +997,7 @@ void ArduPilotPlugin::ApplyMotorForces(const double _dt)
         const double scaler = 5*(upper_Lim - lower_Lim);
         */
         const double posTarget = this->dataPtr->controls[i].cmd;
-        const double pos = this->dataPtr->controls[i].joint->GetAngle(0).Radian();
+        const double pos = this->dataPtr->controls[i].joint->Position();
         const double error = pos - posTarget;
         const double force = this->dataPtr->controls[i].pid.Update(error, _dt);
         this->dataPtr->controls[i].joint->SetForce(0, force);
@@ -1193,7 +1193,7 @@ void ArduPilotPlugin::SendState() const
   // send_fdm
   fdmPacket pkt;
 
-  pkt.timestamp = this->dataPtr->model->GetWorld()->GetSimTime().Double();
+  pkt.timestamp = this->dataPtr->model->GetWorld()->SimTime().Double();
 
   // asssumed that the imu orientation is:
   //   x forward
@@ -1243,13 +1243,13 @@ void ArduPilotPlugin::SendState() const
   //   to: airplane x-forward, y-left, z-down
   const ignition::math::Pose3d gazeboXYZToModelXForwardZDown =
     this->modelXYZToAirplaneXForwardZDown +
-    this->dataPtr->model->GetWorldPose().Ign();
+    this->dataPtr->model->WorldPose();
 
   // get transform from world NED to Model frame
   const ignition::math::Pose3d NEDToModelXForwardZUp =
     gazeboXYZToModelXForwardZDown - this->gazeboXYZToNED;
 
-  // gzerr << "ned to model [" << NEDToModelXForwardZUp << "] -- worldPose: [" << this->dataPtr->model->GetWorldPose().Ign() << "]\n";
+  // gzerr << "ned to model [" << NEDToModelXForwardZUp << "] -- worldPose: [" << this->dataPtr->model->WorldPose() << "]\n";
 
   // N
   pkt.positionXYZ[0] = NEDToModelXForwardZUp.Pos().X();
@@ -1276,7 +1276,7 @@ void ArduPilotPlugin::SendState() const
   // or...
   // Get model velocity in NED frame
   const ignition::math::Vector3d velGazeboWorldFrame =
-    this->dataPtr->model->GetLink()->GetWorldLinearVel().Ign();
+    this->dataPtr->model->GetLink()->WorldLinearVel();
   const ignition::math::Vector3d velNEDFrame =
     this->gazeboXYZToNED.Rot().RotateVectorReverse(velGazeboWorldFrame);
   pkt.velocityXYZ[0] = velNEDFrame.X();
