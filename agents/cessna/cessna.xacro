@@ -1,0 +1,150 @@
+<?xml version="1.0"?>
+<robot name="cessna" xmlns:xacro="http://ros.org/wiki/xacro">
+  <!-- Properties -->
+  <xacro:property name="ns" value="cessna" />
+  <xacro:property name="mesh_root" value="package://ardupilot_sim/agents/cessna/meshes" />
+  <xacro:property name="mass" value="1.5" /> <!-- [kg] -->
+  <xacro:property name="body_inertia">
+    <inertia ixx="12.85315" ixy="0.0" ixz="0.0" iyy=".1825930" iyz="0.0" izz=".002666894" />
+  </xacro:property>
+  <xacro:property name="rotor_inertia">
+    <mass value=".025" />
+    <inertia ixx="7.5067e-05" ixy="0.0" ixz="0.0" iyy="7.5150e-05" iyz="0.0" izz="6.8275e-07" />
+  </xacro:property>
+  <xacro:property name="left_aileron_coeffs">
+      <a0>0.05984281113</a0>
+      <cla>4.752798721</cla>
+      <cda>0.6417112299</cda>
+      <cma>-1.8</cma>
+      <alpha_stall>0.3391428111</alpha_stall>
+      <cla_stall>-3.85</cla_stall>
+      <cda_stall>-0.9233984055</cda_stall>
+      <cma_stall>0</cma_stall>
+      <cp>-0.1 0.2205 0.15</cp>
+      <area>8.08255</area>
+      <upward>0 0 1</upward>
+      <control_joint_rad_to_cl>-2.0</control_joint_rad_to_cl>
+  </xacro:property>
+  <xacro:property name="right_aileron_coeffs">
+      <a0>0.05984281113</a0>
+      <cla>4.752798721</cla>
+      <cda>0.6417112299</cda>
+      <cma>-1.8</cma>
+      <alpha_stall>0.3391428111</alpha_stall>
+      <cla_stall>-3.85</cla_stall>
+      <cda_stall>-0.9233984055</cda_stall>
+      <cma_stall>0</cma_stall>
+      <cp>-0.1 -0.2205 0.15</cp>
+      <area>8.08255</area>
+      <upward>0 0 1</upward>
+      <control_joint_rad_to_cl>-2.0</control_joint_rad_to_cl>
+  </xacro:property>
+  <xacro:property name="elevator_coeffs">
+      <a0>-0.2</a0>
+      <cla>4.752798721</cla>
+      <cda>0.6417112299</cda>
+      <cma>-1.8</cma>
+      <alpha_stall>0.3391428111</alpha_stall>
+      <cla_stall>-3.85</cla_stall>
+      <cda_stall>-0.9233984055</cda_stall>
+      <cma_stall>0</cma_stall>
+      <cp>-0.545 0 0.055</cp>
+      <area>.203458</area>
+      <upward>0 0 1</upward>
+      <control_joint_rad_to_cl>-4.0</control_joint_rad_to_cl>
+  </xacro:property>
+  <xacro:property name="rudder_coeffs">
+      <a0>0.0</a0>
+      <cla>4.752798721</cla>
+      <cda>0.6417112299</cda>
+      <cma>-1.8</cma>
+      <alpha_stall>0.3391428111</alpha_stall>
+      <cla_stall>-3.85</cla_stall>
+      <cda_stall>-0.9233984055</cda_stall>
+      <cma_stall>0</cma_stall>
+      <cp>-0.6 0 0.155</cp>
+      <area>.15329</area>
+      <upward>0 1 0</upward>
+      <control_joint_rad_to_cl>4.0</control_joint_rad_to_cl>
+  </xacro:property>
+
+
+  <!-- *********************** GAZEBO ROBOT DEFINITION ******************* -->
+  <link name="${ns}/base_link">
+    <inertial>
+      <mass value="${mass}" />
+      <origin xyz="-0.004 0 0.09271" />
+      <xacro:insert_block name="body_inertia" />
+    </inertial>
+
+    <collision>
+      <geometry>
+        <box size="1.0 0.5 0.05" />
+      </geometry>
+    </collision>
+
+    <!-- Plane Visual -->
+    <visual>
+      <geometry>
+        <mesh filename="${mesh_root}/body.dae" scale="0.1 0.1 0.1"/>
+      </geometry>
+    </visual>
+  </link>
+
+  <!-- Add collision contact and friction params -->
+  <gazebo reference="${ns}/base_link">
+    <!-- Collision -->
+    <maxVel>100.0</maxVel>
+    <minDepth>0.001</minDepth>
+    <!-- Friction -->
+    <mu1>1</mu1>
+    <mu2>1</mu2>
+  </gazebo>
+
+  <!-- Add visual params -->
+  <gazebo reference="${ns}/base_link">
+    <material>Gazebo/DarkGrey</material>
+  </gazebo>
+
+  <!-- *********************** GAZEBO ROBOT PLUGINS ******************* -->
+  <xacro:include filename="$(find ardupilot_sim)/xacro/imu.xacro" />
+  <xacro:imu ns="${ns}" update_rate="1000">
+    <axis xyz="1 0 0"/>
+    <pose>0 0 0 3.141593 0 0</pose>
+  </xacro:imu>
+
+  <xacro:include filename="$(find ardupilot_sim)/xacro/plane_prop.xacro" />
+  <xacro:plane_prop ns="${ns}">
+    <origin xyz="0.179 0 0.0855" rpy="0 0 0"/>
+  </xacro:plane_prop>
+
+  <xacro:include filename="$(find ardupilot_sim)/xacro/control_surface.xacro" />
+  <xacro:control_surface ns="${ns}" surface_name="left_aileron" limit="0.78">
+    <origin xyz="-0.165 0.37 0.15" rpy="0 0 0"/>
+    <origin xyz="0.195 -0.36 -0.12" rpy="-0.05 0 0.12"/>
+    <origin xyz="-0.145 0.37 0.15" rpy="0.05 0 -0.12"/>
+    <axis xyz="0 1 0"/>
+  </xacro:control_surface>
+  <xacro:control_surface ns="${ns}" surface_name="right_aileron" limit="0.78">
+    <origin xyz="-0.165 -0.37 0.15" rpy="0 0 0"/>
+    <origin xyz="0.195 0.36 -0.12" rpy="0.05 0 -0.12"/>
+    <origin xyz="-0.145 -0.37 0.15" rpy="-0.05 0 0.12"/>
+    <axis xyz="0 1 0"/>
+  </xacro:control_surface>
+  <xacro:control_surface ns="${ns}" surface_name="elevators" limit="0.78">
+    <origin xyz="-0.575 0 0.057" rpy="0 0 0"/>
+    <origin xyz="0.555 0 -0.057" rpy="0 0 0"/>
+    <origin xyz="-0.555 0 0.057" rpy="0 0 0"/>
+    <axis xyz="0 1 0"/>
+  </xacro:control_surface>
+  <xacro:control_surface ns="${ns}" surface_name="rudder" limit="0.78">
+    <origin xyz="-0 0 0" rpy="0 0 0"/>
+    <origin xyz="0.36 0 -0.475" rpy="0 0.35 0"/>
+    <origin xyz="-0.51 0 0.325" rpy="0 -0.35 0"/>
+    <axis xyz="0 0 1"/>
+  </xacro:control_surface>
+
+  <xacro:include filename="$(find ardupilot_sim)/xacro/arduplane.xacro" />
+  <xacro:arduplane ns="${ns}" />
+</robot>
+
