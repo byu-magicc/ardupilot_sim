@@ -1,7 +1,8 @@
 <?xml version="1.0"?>
 <robot name="cessna" xmlns:xacro="http://ros.org/wiki/xacro">
   <!-- Properties -->
-  <xacro:property name="ns" value="cessna" />
+  <xacro:arg name="instance" default="0" />
+  <xacro:property name="ns" value="cessna_$(arg instance)" />
   <xacro:property name="mesh_root" value="package://ardupilot_sim/agents/cessna/meshes" />
   <xacro:property name="mass" value="4" /> <!-- [kg] -->
   <xacro:property name="body_inertia">
@@ -144,7 +145,7 @@
     <axis xyz="0 0 1"/>
   </xacro:control_surface>
 
-  <xacro:include filename="$(find ardupilot_sim)/xacro/arduplane.xacro" />
-  <xacro:arduplane ns="${ns}" />
+  <xacro:include filename="$(find ardupilot_sim)/xacro/arduplane.xacro"/>
+  <xacro:arduplane ns="${ns}" inst="$(arg instance)"/>
 </robot>
 

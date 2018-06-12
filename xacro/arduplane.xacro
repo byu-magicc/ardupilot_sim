@@ -1,12 +1,12 @@
 <?xml version="1.0"?>
 <robot name="plane" xmlns:xacro="http://ros.org/wiki/xacro">
 
-  <xacro:macro name="arduplane" params="ns">
+  <xacro:macro name="arduplane" params="ns inst">
     <gazebo>
-      <plugin name="arduplane_plugin" filename="libArduPilotPlugin.so">
+      <plugin name="${ns}_arduplane_plugin" filename="libArduPilotPlugin.so">
         <fdm_addr>127.0.0.1</fdm_addr>
-        <fdm_port_in>9002</fdm_port_in>
-        <fdm_port_out>9003</fdm_port_out>
+        <fdm_port_in>${9002 + 10*inst} </fdm_port_in>
+        <fdm_port_out>${9003 + 10*inst}</fdm_port_out>
         <!--
             Require by APM :
             Only change model and gazebo from XYZ to XY-Z coordinates
