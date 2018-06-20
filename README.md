@@ -103,11 +103,11 @@ These steps can be found at the official ArduPilot Dev documentation on [Simulat
 
 1. Miscellaneous Plane things
 
-    * **Note**: you can apply this patch to the `Copter-3.5.4` branch but you will get merge conflicts. If you feel more comfortable, you can work on that branch and resolve the merge conflicts and it will work.
+- **Note**: you can apply this patch to the `Copter-3.5.4` branch but you will get merge conflicts. If you feel more comfortable, you can work on that branch and resolve the merge conflicts and it will work.
 
-    * The basic MAVProxy commands for the plane can be found in the ![APM Tutorial](http://ardupilot.org/dev/docs/plane-sitlmavproxy-tutorial.html). 
+- The basic MAVProxy commands for the plane can be found in the ![APM Tutorial](http://ardupilot.org/dev/docs/plane-sitlmavproxy-tutorial.html). 
 
-    * The first waypoint needs to be of type `NAV_TAKEOFF`, this differs from the Copter simulation.
+- The first waypoint needs to be of type `NAV_TAKEOFF`, this differs from the Copter simulation.
 
 
  
