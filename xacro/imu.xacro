@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <robot xmlns:xacro="http://ros.org/wiki/xacro">
-  <xacro:macro name="imu" params="ns update_rate *pose">
+  <xacro:macro name="imu" params="ns update_rate *axis *pose">
     <link name="${ns}/imu_link">
       <inertial>
         <mass value="0.15" />
@@ -12,7 +12,7 @@
       <parent link="${ns}/base_link" />
       <child link="${ns}/imu_link" />
       <origin xyz="0 0 0" rpy="0 0 0"/>
-      <axis xyz="0 0 1"/>
+      <xacro:insert_block name="axis" />
       <dynamics damping="1"/>
       <limit effort="0" velocity="0" lower="0" upper="0" />
     </joint>

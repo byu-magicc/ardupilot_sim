@@ -3,7 +3,7 @@
   <xacro:macro name="rotor" params="ns motor_number prop_dir *origin">
     <link name="${ns}/rotor_${motor_number}">
       <inertial>
-        <mass value="0.025" />
+        <!--Look in iris.xacro or plane.xacro for definition -->
         <xacro:insert_block name="rotor_inertia" />
       </inertial>
 
