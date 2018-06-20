@@ -1,7 +1,7 @@
 ardupilot_sim
 =============
 
-This ROS simulation package includes plugins necessary for SITL/Gazebo simulations with the APM stack. Currently, only Copter plugins exist.
+This ROS simulation package includes plugins necessary for SITL/Gazebo simulations with the APM stack.
 
 Tested with the following setup:
 
@@ -14,6 +14,15 @@ These steps can be found at the official ArduPilot Dev documentation on [Simulat
     ```bash
     $ sudo apt install python-matplotlib python-serial python-wxgtk3.0 python-wxtools python-lxml python-scipy python-opencv ccache gawk genromfs python-pip python-pexpect
     $ sudo -H pip install future pymavlink MAVProxy
+    ```
+
+1. Grab the Ardupilot git repository
+
+    ```bash
+    git clone git://github.com/ArduPilot/ardupilot.git
+    cd ardupilot
+    git checkout Copter-3.5.4
+    git submodule update --init --recursive
     ```
 
 1. Add the `sim_vehicle.py` script to your path by adding the following to your `.bashrc`:
@@ -53,7 +62,55 @@ These steps can be found at the official ArduPilot Dev documentation on [Simulat
     GUIDED> takeoff 30
     ```
 
-    The copter should then take off and hover at 30m. You may then use the map to right click and `Fly To` locations on the map (this is a GUIDED mode feature).
+    The copter should then take off and hover at 30m. You may then use the map to right click and `Fly To` locations on the map (this is a GUIDED mode feature). The basic MAVProxy commands can be found in the ![APM Tutorial](http://ardupilot.org/dev/docs/copter-sitl-mavproxy-tutorial.html)
+
+1. Now that the SITL environment is working, you can test the gazebo plugin. 
+
+    ```bash
+    cd <some catkin_ws>/src
+    git clone git@magiccvs.byu.edu:lab/ardupilot_sim.git
+    cd ..
+    catkin_make
+    source devel/setup.bash
+    roslaunch ardupilot_sim copter.launch
+    ```
+
+    At this point you should see the iris model appear in gazebo. Using the same MAVProxy commands in the previous section should cause the propellers to spin and iris to takeoff.
+
+
+## Setting up ArduPlane SITL Environment ##
+
+1. First follow the **Setting up ArduCopter SITL Environment** section. 
+
+1. The plane support was developed on the `ArduPlane-3.8.5` branch.
+
+    ```bash
+    git checkout ArduPlane-3.8.5
+    ```
+
+1. The Ardupilot SITL is written to support multiple physics engines (JSBSim, Gazebo, etc.). If the `sim_vehicle.py` script is called with a frame name beginning with `gazebo-`, it will default to using gazebo for its physics engine. At this moment, the official ardupilot only supports a flying wing model `gazebo-zephyr`. This model only has two control surfaces (elevons) with a rear-mounted propeller. We will commonly want to use typical 4-channel planes during our simulations / flight tests. Since the possible frames are contained in the ardupilot repository, the easiest way to get 4-channel plane support is to patch the `gazebo-zephyr.parm` file and make it a 4-channel plane.
+
+    ```bash
+    cd $HOME/ardupilot
+    git apply <path to catkin_ws>/src/ardupilot_sim/patches/Zephyr-Params.patch
+    ```
+
+1. You can now test the gazebo plugin.
+
+    ```bash
+    roslaunch ardupilot_sim plane.launch
+    ```
+
+1. Miscellaneous Plane things
+
+    * **Note**: you can apply this patch to the `Copter-3.5.4` branch but you will get merge conflicts. If you feel more comfortable, you can work on that branch and resolve the merge conflicts and it will work.
+
+    * The basic MAVProxy commands for the plane can be found in the ![APM Tutorial](http://ardupilot.org/dev/docs/plane-sitlmavproxy-tutorial.html). 
+
+    * The first waypoint needs to be of type `NAV_TAKEOFF`, this differs from the Copter simulation.
+
+
+ 
 
 ## Coordinate Frames ##
 
