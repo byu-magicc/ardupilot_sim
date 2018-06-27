@@ -3,9 +3,9 @@
   <!-- Properties -->
   <xacro:property name="ns" value="cessna" />
   <xacro:property name="mesh_root" value="package://ardupilot_sim/agents/cessna/meshes" />
-  <xacro:property name="mass" value="1.5" /> <!-- [kg] -->
+  <xacro:property name="mass" value="4" /> <!-- [kg] -->
   <xacro:property name="body_inertia">
-    <inertia ixx="12.85315" ixy="0.0" ixz="0.0" iyy=".1825930" iyz="0.0" izz=".002666894" />
+    <inertia ixx="0.1285315" ixy="0.0" ixz="0.0" iyy="0.1825930" iyz="0.0" izz="0.2666894" />
   </xacro:property>
   <xacro:property name="rotor_inertia">
     <mass value=".025" />
@@ -97,8 +97,8 @@
     <maxVel>100.0</maxVel>
     <minDepth>0.001</minDepth>
     <!-- Friction -->
-    <mu1>1</mu1>
-    <mu2>1</mu2>
+    <mu1>.1</mu1>
+    <mu2>.1</mu2>
   </gazebo>
 
   <!-- Add visual params -->

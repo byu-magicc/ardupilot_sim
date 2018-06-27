@@ -38,7 +38,7 @@
         <cda_stall>-0.9233984055</cda_stall>
         <cma_stall>0</cma_stall>
         <cp>-0.37 0 0.77</cp>
-        <area>.001</area>
+        <area>.0001</area>
         <air_density>1.2041</air_density>
         <forward>0 -1 0</forward>
         <upward>1 0 0</upward>
@@ -54,7 +54,7 @@
         <cda_stall>-0.9233984055</cda_stall>
         <cma_stall>0</cma_stall>
         <cp>-0.37 0 -0.77</cp>
-        <area>.001</area>
+        <area>.0001</area>
         <air_density>1.2041</air_density>
         <forward>0 1 0</forward>
         <upward>1 0 0</upward>
