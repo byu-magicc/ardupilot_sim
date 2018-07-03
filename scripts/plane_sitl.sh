@@ -10,9 +10,9 @@ MAP=$3
 trap '{ echo "Cleaning up plane_sitl.sh"; kill -f xterm; kill -f mavproxy.py; }' EXIT
 
 if $MAP; then
-  CMD="sim_vehicle.py -v ArduPlane -f gazebo-zephyr $LATLON,0,0 --map --console --instance $INSTANCE"
+  CMD="sim_vehicle.py -v ArduPlane -f gazebo-zephyr -l $LATLON,0,0 --map --console --instance $INSTANCE"
 else
-  CMD="sim_vehicle.py -v ArduPlane -f gazebo-zephyr $LATLON,0,0 --console --instance $INSTANCE"
+  CMD="sim_vehicle.py -v ArduPlane -f gazebo-zephyr -l $LATLON,0,0 --console --instance $INSTANCE"
 fi
 
 xterm -fa monospace -fs 12 -n PlaneSITL -T PlaneSITL -hold -geometry 100x20 -e $CMD
