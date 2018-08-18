@@ -20,7 +20,7 @@
         <arg name="model"               value="$(find ardupilot_sim)/agents/iris/iris.xacro" />
         <arg name="x"                   value="0"/>
         <arg name="y"                   value="0"/>
-        <arg name="z"                   value="0"/>
+        <arg name="z"                   value="0.2"/>
         <arg name="yaw"                 value="0"/>
         <arg name="color"               value="Black"/>
     </include>

@@ -146,6 +146,8 @@ It is possible to use an RC Transmitter to control the SITL using MAVProxy's `jo
     1. During the gyro bias calibration step, ArduPilot does not send MAVLink heartbeat messages.
     2. ArduPilot gets stuck during this step if there are large IMU variances -- i.e., if the UAV is moving.
     3. For some reason, Gazebo seems to start the Iris model with each motor having some angular velocity, which causes the Iris to be moving slightly.
+    4. It may be helpful to start the copter with some `z` component (i.e., `z=0.2` in ENU)
+    5. Take a look at the Safe2Ditch repo for a working demo of SIL.
 
 - MAVProxy Map says "Unavailable":
     - The map tile server provider is not available. Go to `View` > `Service` and choose another (`MicrosoftSat` seems to work well).
