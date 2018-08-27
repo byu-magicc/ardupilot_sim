@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <launch>
     <!-- Run the APM provided `sim_vehicle.py` SITL command -->
-    <node pkg="ardupilot_sim" type="plane_sitl.sh" name="plane_sitl" args="40.267987,-111.635558"  />
+    <node pkg="ardupilot_sim" type="plane_sitl.sh" name="plane_sitl" args="40.267987,-111.635558 0 true"  output="screen"/>
 
     <!-- Start Gazebo -->
     <include file="$(find gazebo_ros)/launch/empty_world.launch">
@@ -18,6 +18,7 @@
     <include file="$(find ardupilot_sim)/launch/spawn_mav.launch">
         <arg name="mav_name"            value="cessna" />
         <arg name="model"               value="$(find ardupilot_sim)/agents/cessna/cessna.xacro" />
+        <arg name="instance"            value="0"/>
         <arg name="x"                   value="0"/>
         <arg name="y"                   value="0"/>
         <arg name="z"                   value="0.2"/>

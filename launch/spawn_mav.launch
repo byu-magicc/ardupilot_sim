@@ -3,6 +3,7 @@
   <arg name="mav_name" default="vehicle"/>
   <arg name="model" default="$(find ardupilot_sim)/agents/iris/iris.xacro"/>
   <arg name="tf_prefix" default="$(optenv ROS_NAMESPACE)"/>
+  <arg name="instance" default="0"/>
   <arg name="x" default="0.0"/>
   <arg name="y" default="0.0"/>
   <arg name="z" default="0.0"/>
@@ -15,6 +16,7 @@
   <!-- send the robot XML to param server -->
   <param name="robot_description" command="
     xacro --inorder '$(arg model)'
+    instance:=$(arg instance)
     mav_name:=$(arg mav_name)
     color:=$(arg color)
     gazebo_namespace:=$(arg gazebo_namespace)/gazebo

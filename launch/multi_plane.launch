@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<launch>
+    <!-- Run the APM provided `sim_vehicle.py` SITL command -->
+    <node pkg="ardupilot_sim" type="plane_sitl.sh" name="plane_sitl0" args="40.267987,-111.635558 0 false"  />
+    <node pkg="ardupilot_sim" type="plane_sitl.sh" name="plane_sitl1" args="40.267987,-111.635558 1 false"  />
+
+    <!-- Start Gazebo -->
+    <include file="$(find gazebo_ros)/launch/empty_world.launch">
+        <arg name="world_name" value="$(find ardupilot_sim)/worlds/iris_ardupilot.world"/>
+        <arg name="debug" value="false"/>
+        <arg name="gui" value="true"/>
+        <arg name="paused" value="false"/>
+        <arg name="use_sim_time" value="true"/>
+        <arg name="headless" value="false"/>
+        <arg name="verbose" value="true"/>
+    </include>
+
+    <!-- Spawn in Gazebo -->
+    <include ns="cessna_0" file="$(find ardupilot_sim)/launch/spawn_mav.launch">
+        <arg name="mav_name"            value="cessna_0" />
+        <arg name="model"               value="$(find ardupilot_sim)/agents/cessna/cessna.xacro" />
+        <arg name="instance"            value="0"/>
+        <arg name="x"                   value="0"/>
+        <arg name="y"                   value="0"/>
+        <arg name="z"                   value="0.2"/>
+        <arg name="yaw"                 value="1.57079"/>
+        <arg name="color"               value="Black"/>
+        <arg name="robot_namespace"     value="/cessna0" />
+    </include>
+
+    <!-- Spawn in Gazebo -->
+    <include ns="cessna_1" file="$(find ardupilot_sim)/launch/spawn_mav.launch">
+        <arg name="mav_name"            value="cessna_1" />
+        <arg name="model"               value="$(find ardupilot_sim)/agents/cessna/cessna.xacro" />
+        <arg name="instance"            value="1"/>
+        <arg name="x"                   value="10"/>
+        <arg name="y"                   value="10"/>
+        <arg name="z"                   value="0.2"/>
+        <arg name="yaw"                 value="1.57079"/>
+        <arg name="color"               value="Black"/>
+        <arg name="robot_namespace"     value="/cessna1" />
+    </include>
+
+
+</launch>
